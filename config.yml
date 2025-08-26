@@ -229,89 +229,89 @@ matchmaking:
   challenge_timeout: 5
   opponent_rating_difference: 2000
   opponent_allow_tos_violation: false
-  challenge_mode: both
+  challenge_mode: rated
   timeout: 5
   selection: weighted_random
   types:
     bullet_0_5:
       enabled: true
       tc: "0.5+0"      # 30 Sekunden ohne Inkrement
-      weight: 5
+      weight: 10
       variant: standard
     bullet_1_0:
       enabled: true
       tc: "1+0"        # 1 Minute ohne Inkrement
-      weight: 4
+      weight: 10
       variant: standard
     bullet_1_1:
       enabled: true
       tc: "1+1"
-      weight: 3
+      weight: 10
       variant: standard
     blitz_3_0:
       enabled: true
       tc: "3+0"
-      weight: 3
+      weight: 10
       variant: standard
     blitz_5_0:
       enabled: true
       tc: "5+0"
-      weight: 2
+      weight: 10
       variant: standard
     rapid_10_0:
       enabled: true
       tc: "10+0"
-      weight: 1
+      weight: 10
       variant: standard
     classical_30_0:
       enabled: true
       tc: "30+0"
-      weight: 1
+      weight: 10
       variant: standard
     bullet_chess960:
       enabled: true
       tc: "1+0"
-      weight: 2
+      weight: 10
       variant: chess960
     blitz_chess960:
       enabled: true
       tc: "3+0"
-      weight: 2
+      weight: 10
       variant: chess960
     bullet_crazyhouse:
       enabled: true
       tc: "1+0"
-      weight: 2
+      weight: 10
       variant: crazyhouse
     blitz_crazyhouse:
       enabled: true
       tc: "3+0"
-      weight: 2
+      weight: 10
       variant: crazyhouse
     bullet_threeCheck:
       enabled: true
       tc: "1+0"
-      weight: 2
+      weight: 10
       variant: threeCheck
     blitz_threeCheck:
       enabled: true
       tc: "3+0"
-      weight: 2
+      weight: 10
       variant: threeCheck
     bullet_kingOfTheHill:
       enabled: true
       tc: "1+0"
-      weight: 2
+      weight: 10
       variant: kingOfTheHill
     blitz_kingOfTheHill:
       enabled: true
       tc: "3+0"
-      weight: 2
+      weight: 10
       variant: kingOfTheHill
     bullet_atomic:
       enabled: true
       tc: "1+0"
-      weight: 2
+      weight: 10
       variant: atomic      
     blitz_atomic:
       enabled: true
