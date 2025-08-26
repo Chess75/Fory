@@ -161,7 +161,7 @@ online_moves:
     # max_depth: 30
 
   chessdb:
-    enabled: false                         # Activate online moves from https://chessdb.cn/queryc_en/
+    enabled: false                         # Activate online moves from chessdb.cn/queryc_en/
     priority: 100                         # Priority with which this move source is used. Higher priority is used first.
     only_without_book: false              # Whether the chessdb should only be used if there is no matching book.
     min_candidates: 5                     # Minimum number of candidate moves.
@@ -188,38 +188,160 @@ resign:
   consecutive_moves: 6
   against_humans: false
 
+
+
 challenge:
-  concurrency: 2
-  bullet_with_increment_only: false   
-# min_initial: 60
+  enabled: true
+  concurrency: 10
   variants:
     - standard
     - chess960
+    - kingOfTheHill
+    - threeCheck
     - antichess
     - atomic
-    - kingOfTheHill
+    - horde
     - racingKings
-    - threeCheck
+    - crazyhouse
   time_controls:
     - bullet
     - blitz
     - rapid
-  # - classical
+    - classical
+    - correspondence
+  bullet_with_increment_only: false
   bot_modes:
-    - casual
     - rated
+    - casual
   human_modes:
-    - casual
     - rated
+    - casual
+
+
+
+
+
+
+
 
 matchmaking:
-  delay: 10
-  timeout: 30
-  selection: cyclic 
+  allow_matchmaking: true
+  challenge_timeout: 5
+  opponent_rating_difference: 400
+  opponent_allow_tos_violation: false
+  challenge_mode: rated
+  timeout: 5
+  selection: weighted_random
   types:
-    bullet:
-      tc: 0.5+0
+    bullet_0_5:
+      enabled: true
+      tc: "0.5+0"      # 30 Sekunden ohne Inkrement
+      weight: 5
+      variant: standard
+    bullet_1_0:
+      enabled: true
+      tc: "1+0"        # 1 Minute ohne Inkrement
+      weight: 4
+      variant: standard
+    bullet_1_1:
+      enabled: true
+      tc: "1+1"
+      weight: 3
+      variant: standard
+    blitz_3_0:
+      enabled: true
+      tc: "3+0"
+      weight: 3
+      variant: standard
+    blitz_5_0:
+      enabled: true
+      tc: "5+0"
+      weight: 2
+      variant: standard
+    rapid_10_0:
+      enabled: true
+      tc: "10+0"
+      weight: 1
+      variant: standard
+    classical_30_0:
+      enabled: true
+      tc: "30+0"
+      weight: 1
+      variant: standard
+    bullet_chess960:
+      enabled: true
+      tc: "1+0"
+      weight: 2
+      variant: chess960
+    blitz_chess960:
+      enabled: true
+      tc: "3+0"
+      weight: 2
+      variant: chess960
+    bullet_crazyhouse:
+      enabled: true
+      tc: "1+0"
+      weight: 2
+      variant: crazyhouse
+    blitz_crazyhouse:
+      enabled: true
+      tc: "3+0"
+      weight: 2
+      variant: crazyhouse
+    bullet_threeCheck:
+      enabled: true
+      tc: "1+0"
+      weight: 2
+      variant: threeCheck
+    blitz_threeCheck:
+      enabled: true
+      tc: "3+0"
+      weight: 2
+      variant: threeCheck
+    bullet_kingOfTheHill:
+      enabled: true
+      tc: "1+0"
+      weight: 2
+      variant: kingOfTheHill
+    blitz_kingOfTheHill:
+      enabled: true
+      tc: "3+0"
+      weight: 2
+      variant: kingOfTheHill
+    bullet_atomic:
+      enabled: true
+      tc: "1+0"
+      weight: 2
+      variant: atomic      
+    blitz_atomic:
+      enabled: true
+      tc: "3+0"
+      weight: 2
+      variant: atomic
+    bullet_racingKings:
+      enabled: true
+      tc: "1+0"
+      weight: 2
+      variant: racingKings
+    blitz_racingKings:
+      enabled: true
+      tc: "3+0"
+      weight: 2
+      variant: racingKings
 
+
+
+  delay: 30
+
+
+
+
+
+
+
+
+
+  
 messages:
   greeting: "Hey! I am {me} running on {engine}.Type !assist for a glimpse of my commands."
   goodbye: "Good game!How about a rematch?"
