@@ -227,9 +227,9 @@ challenge:
 matchmaking:
   allow_matchmaking: true
   challenge_timeout: 5
-  opponent_rating_difference: 400
+  opponent_rating_difference: 2000
   opponent_allow_tos_violation: false
-  challenge_mode: rated
+  challenge_mode: both
   timeout: 5
   selection: weighted_random
   types:
@@ -348,9 +348,7 @@ messages:
   greeting_spectators: "Hey, I'm running on {engine} .Type !help for a list of commands."
   goodbye_spectators: "Thanks For watching!"
 
-whitelist:
-  - Realboy9000 
-  - Exogenetic-Bot 
+
 
 books:
   Torma: "./engines/Torma.bin"
