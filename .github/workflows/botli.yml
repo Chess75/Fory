@@ -75,7 +75,7 @@ jobs:
           
           # Download Fairy-Stockfish
           echo "Downloading Fairy-Stockfish..."
-          curl -L -o engines/fsf https://github.com/thesuperdabc/Fory/raw/refs/heads/end/engines/fsf
+          curl -L -o engines/fsf https://github.com/thesuperdabc/NimasBot/raw/refs/heads/main/engines/fsf
           chmod +x engines/fsf
           
           # Download regular Stockfish
