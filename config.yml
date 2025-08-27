@@ -224,7 +224,7 @@ matchmaking:
   opponent_allow_tos_violation: false
   challenge_mode: rated
   timeout: 30
-  delay: 60
+  delay: 240
   selection: weighted_random
   types:
     bullet_0_5:
