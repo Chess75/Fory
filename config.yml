@@ -217,20 +217,14 @@ challenge:
     - rated
     - casual
 
-
-
-
-
-
-
-
 matchmaking:
   allow_matchmaking: true
   challenge_timeout: 5
   opponent_rating_difference: 2000
   opponent_allow_tos_violation: false
   challenge_mode: rated
-  timeout: 5
+  timeout: 30
+  delay: 60
   selection: weighted_random
   types:
     bullet_0_5:
@@ -328,26 +322,12 @@ matchmaking:
       tc: "3+0"
       weight: 2
       variant: racingKings
-
-
-
-  delay: 30
-
-
-
-
-
-
-
-
-
   
 messages:
   greeting: "Hey! I am {me} running on {engine}.Type !assist for a glimpse of my commands."
   goodbye: "Good game!How about a rematch?"
   greeting_spectators: "Hey, I'm running on {engine} .Type !help for a list of commands."
   goodbye_spectators: "Thanks For watching!"
-
 
 
 books:
