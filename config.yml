@@ -50,7 +50,7 @@ engines:
     name: "fsf"
     ponder: true
     silence_stderr: false
-    move_overhead_multiplier: 1.0
+    move_overhead_multiplier: 20.0
     uci_options:
       Threads: 7
       Hash: 10000
@@ -179,11 +179,11 @@ offer_draw:
   enabled: true
   score: 10
   consecutive_moves: 10
-  min_game_length: 32
+  min_game_length: 25
   against_humans: false
 
 resign:
-  enabled: false
+  enabled: true
   score: -1000
   consecutive_moves: 6
   against_humans: false
@@ -192,7 +192,7 @@ resign:
 
 challenge:
   enabled: true
-  concurrency: 10
+  concurrency: 4
   variants:
     - standard
     - chess960
@@ -344,9 +344,9 @@ matchmaking:
       variant: horde
 
 messages:
-  greeting: "Hey! I am {me} running on {engine}.Type !assist for a glimpse of my commands."
-  goodbye: "Good game!How about a rematch?"
-  greeting_spectators: "Hey, I'm running on {engine} .Type !help for a list of commands."
+  greeting: "Hey! I am {me} running on {engine}.Type !assist my commands. @DarkOnCrack is my baby! <3"
+  goodbye: "Good game! Any suggestions? Message @DarkOnCrack"
+  greeting_spectators: "Hey, I'm running on {engine} .Type !help for a list of commands. @DarkOnCrack is my baby! <3"
   goodbye_spectators: "Thanks For watching!"
 
 
