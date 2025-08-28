@@ -33,8 +33,8 @@ on:
     paths:  
       - "user_interface.py"  
 
-  schedule:
-    - cron: "0 */6 * * *"  # Runs every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
+  schedule:  
+    - cron: "0 */6 * * *"  # Runs at 00:00, 06:00, 12:00, 18:00 UTC 
 
 permissions:
   actions: write
@@ -70,28 +70,30 @@ jobs:
 
       - name: Download and setup engines
         run: |
-          # Create engines directory if it doesn't exist
+          # Create engines directory if needed
           mkdir -p engines
           
-          # Download Fairy-Stockfish
-          echo "Downloading Fairy-Stockfish..."
-          curl -L -o engines/fsf https://github.com/thesuperdabc/Fory/raw/refs/heads/end/engines/fsf
-          chmod +x engines/fsf
-          
-          # Download regular Stockfish
+          # Download and setup Stockfish
           echo "Downloading Stockfish..."
           curl -L -o stockfish.zip http://abrok.eu/stockfish/latest/linux/stockfish_x64_modern.zip
           unzip -o stockfish.zip -d engines/
           mv engines/stockfish_* engines/sf
           chmod +x engines/sf
+          
+          # Download and setup FSF
+          echo "Downloading FSF..."
+          wget https://github.com/thesuperdabc/NimasBot/raw/refs/heads/main/engines/fsf -O engines/fsf
+          chmod +x engines/fsf
+          
+          # Verify engines
+          echo "Verifying engines..."
+          ls -la engines/
+          file engines/sf engines/fsf
+          ./engines/sf --version || true
+          ./engines/fsf --version || true
 
       - name: Inject Secret Token  
         run: sed -i "s/TokenTimeIsBackBuddyss/${{ secrets.LICHESS_KEY }}/g" config.yml  
-
-      - name: Make engines executable  
-        run: |  
-          chmod +x ./engines/sf  
-          chmod +x ./engines/fsf
 
       - name: Install GitHub CLI  
         run: |  
