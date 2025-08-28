@@ -322,16 +322,16 @@ matchmaking:
       tc: "3+0"
       weight: 1
       variant: racingKings
-    bullet_antiChess:
+    bullet_antichess:
       enabled: true
       tc: "1+0" 
       weight: 1
-      variant: antiChess 
-    blitz_antiChess:
+      variant: antichess 
+    blitz_antichess:
       enabled: true
       tc: "3+0" 
       weight: 1
-      variant: antiChess 
+      variant: antichess 
     bullet_horde:
       enabled: true
       tc: "1+0" 
