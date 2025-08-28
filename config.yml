@@ -274,8 +274,8 @@ matchmaking:
       variant: chess960
     bullet_crazyhouse:
       enabled: true
-      tc: "1+0"
-      weight: 1
+      tc: "0.5+0"
+      weight: 1000
       variant: crazyhouse
     blitz_crazyhouse:
       enabled: true
