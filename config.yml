@@ -224,41 +224,41 @@ matchmaking:
   opponent_allow_tos_violation: false
   challenge_mode: rated
   timeout: 30
-  delay: 240
+  delay: 10
   selection: weighted_random
   types:
     bullet_0_5:
-      enabled: true
+      enabled: false
       tc: "0.5+0"      # 30 Sekunden ohne Inkrement
       weight: 1
       variant: standard
     bullet_1_0:
-      enabled: true
+      enable: false
       tc: "1+0"        # 1 Minute ohne Inkrement
       weight: 1
       variant: standard
     bullet_1_1:
-      enabled: true
+      enabled: false
       tc: "1+1"
       weight: 1
       variant: standard
     blitz_3_0:
-      enabled: true
+      enabled: false
       tc: "3+0"
       weight: 1
       variant: standard
     blitz_5_0:
-      enabled: true
+      enabled: false
       tc: "5+0"
       weight: 1
       variant: standard
     rapid_10_0:
-      enabled: true
+      enabled: false
       tc: "10+0"
       weight: 1
       variant: standard
     classical_30_0:
-      enabled: true
+      enabled: false
       tc: "30+0"
       weight: 1
       variant: standard
@@ -274,8 +274,8 @@ matchmaking:
       variant: chess960
     bullet_crazyhouse:
       enabled: true
-      tc: "0.5+0"
-      weight: 1000
+      tc: "1+0"
+      weight: 1
       variant: crazyhouse
     blitz_crazyhouse:
       enabled: true
