@@ -224,33 +224,33 @@ matchmaking:
   opponent_allow_tos_violation: false
   challenge_mode: rated
   timeout: 30
-  delay: 10
+  delay: 400
   selection: weighted_random
   types:
     bullet_0_5:
       enabled: true
       tc: "0.5+0"      # 30 Sekunden ohne Inkrement
-      weight: 1
+      weight: 100
       variant: standard
     bullet_1_0:
       enable: true
       tc: "1+0"        # 1 Minute ohne Inkrement
-      weight: 1
+      weight: 100
       variant: standard
     blitz_3_0:
       enabled: true
       tc: "3+0"
-      weight: 1
+      weight: 100
       variant: standard
     blitz_5_0:
       enabled: true
       tc: "5+0"
-      weight: 1
+      weight: 100
       variant: standard
     rapid_10_0:
       enabled: true
       tc: "10+0"
-      weight: 1
+      weight: 100
       variant: standard
     classical_30_0:
       enabled: true
@@ -265,7 +265,7 @@ matchmaking:
     blitz_chess960:
       enabled: true
       tc: "3+0"
-      weight: 1
+      weight: 100
       variant: chess960
     bullet_crazyhouse:
       enabled: true
@@ -275,7 +275,7 @@ matchmaking:
     blitz_crazyhouse:
       enabled: true
       tc: "3+0"
-      weight: 1
+      weight: 100
       variant: crazyhouse
     bullet_threeCheck:
       enabled: true
@@ -285,7 +285,7 @@ matchmaking:
     blitz_threeCheck:
       enabled: true
       tc: "3+0"
-      weight: 1
+      weight: 100
       variant: threeCheck
     bullet_kingOfTheHill:
       enabled: true
@@ -295,7 +295,7 @@ matchmaking:
     blitz_kingOfTheHill:
       enabled: true
       tc: "3+0"
-      weight: 1
+      weight: 100
       variant: kingOfTheHill
     bullet_atomic:
       enabled: true
@@ -305,7 +305,7 @@ matchmaking:
     blitz_atomic:
       enabled: true
       tc: "3+0"
-      weight: 1
+      weight: 100
       variant: atomic
     bullet_racingKings:
       enabled: true
@@ -315,7 +315,7 @@ matchmaking:
     blitz_racingKings:
       enabled: true
       tc: "3+0"
-      weight: 1
+      weight: 100
       variant: racingKings
     bullet_antichess:
       enabled: true
@@ -325,7 +325,7 @@ matchmaking:
     blitz_antichess:
       enabled: true
       tc: "3+0" 
-      weight: 1
+      weight: 100
       variant: antichess 
     bullet_horde:
       enabled: true
@@ -335,7 +335,7 @@ matchmaking:
     blitz_horde:
       enabled: true
       tc: "3+0" 
-      weight: 1
+      weight: 100
       variant: horde
 
 messages:
