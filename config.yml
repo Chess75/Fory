@@ -224,7 +224,7 @@ matchmaking:
   opponent_allow_tos_violation: false
   challenge_mode: rated
   timeout: 30
-  delay: 240
+  delay: 10
   selection: weighted_random
   types:
     bullet_0_5:
@@ -260,7 +260,7 @@ matchmaking:
     bullet_chess960:
       enabled: true
       tc: "1+0"
-      weight: 1
+      weight: 50
       variant: chess960
     blitz_chess960:
       enabled: true
@@ -270,7 +270,7 @@ matchmaking:
     bullet_crazyhouse:
       enabled: true
       tc: "1+0"
-      weight: 1
+      weight: 100
       variant: crazyhouse
     blitz_crazyhouse:
       enabled: true
@@ -280,7 +280,7 @@ matchmaking:
     bullet_threeCheck:
       enabled: true
       tc: "1+0"
-      weight: 1
+      weight: 100
       variant: threeCheck
     blitz_threeCheck:
       enabled: true
@@ -290,7 +290,7 @@ matchmaking:
     bullet_kingOfTheHill:
       enabled: true
       tc: "1+0"
-      weight: 1
+      weight: 100
       variant: kingOfTheHill
     blitz_kingOfTheHill:
       enabled: true
@@ -300,7 +300,7 @@ matchmaking:
     bullet_atomic:
       enabled: true
       tc: "1+0"
-      weight: 1
+      weight: 100
       variant: atomic      
     blitz_atomic:
       enabled: true
@@ -310,7 +310,7 @@ matchmaking:
     bullet_racingKings:
       enabled: true
       tc: "1+0"
-      weight: 1
+      weight: 100
       variant: racingKings
     blitz_racingKings:
       enabled: true
@@ -320,7 +320,7 @@ matchmaking:
     bullet_antichess:
       enabled: true
       tc: "1+0" 
-      weight: 1
+      weight: 100
       variant: antichess 
     blitz_antichess:
       enabled: true
@@ -330,7 +330,7 @@ matchmaking:
     bullet_horde:
       enabled: true
       tc: "1+0" 
-      weight: 1
+      weight: 100
       variant: horde
     blitz_horde:
       enabled: true
