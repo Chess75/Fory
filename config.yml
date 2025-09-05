@@ -224,7 +224,7 @@ matchmaking:
   opponent_allow_tos_violation: false
   challenge_mode: rated
   timeout: 30
-  delay: 240
+  delay: 60
   selection: weighted_random
   types:
     bullet_0_5:
@@ -335,8 +335,20 @@ matchmaking:
     blitz_horde:
       enabled: true
       tc: "3+0" 
-      weight: 100
+      weight: 10000
       variant: horde
+    correspondence_1d:
+      enabled: true
+      tc: "1d"  # 1 Tag pro Zug
+      weight: 10000
+      variant: standard
+    correspondence_3d:
+      enabled: true
+      tc: "3d"  # 3 Tage pro Zug
+      weight: 100
+      variant: standard
+    # Bestehende Einträge wie bullet_1_0, blitz_3_0 usw. bleiben erhalten
+
 
 messages:
   greeting: "Hey! I am {me} running on {engine}.Type !assist my commands. @DarkOnCrack is my baby! <3"
