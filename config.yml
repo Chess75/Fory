@@ -177,9 +177,9 @@ online_moves:
 
 offer_draw:
   enabled: true
-  score: 10
-  consecutive_moves: 10
-  min_game_length: 25
+  score: 20
+  consecutive_moves: 5
+  min_game_length: 31
   against_humans: false
 
 resign:
