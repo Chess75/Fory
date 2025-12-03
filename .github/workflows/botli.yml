@@ -10,7 +10,7 @@ on:
         default: "false"  
       matchmaking:  
         description: "Enable matchmaking?"  
-        required: false  
+        required: true  
         type: boolean  
         default: "true" 
       additional_command:  
