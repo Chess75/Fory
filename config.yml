@@ -97,14 +97,15 @@ opening_books:
 #     names:                              # List of names of books to use if there is no specific book for the time control, white, black or chess960
 #       - DefaultBook    
     standard_black:
-      selection: best_move 
+      selection: weighted_random
+ 
     # max depth : 69 
       names:
         - Stay
         - Win
         - Black
     standard_white:
-      selection: best_move 
+      selection: weighted_random 
     # max depth : 69 
       names:
         - Stay
