@@ -1,174 +1,149 @@
-name: Run botli  
+name: Run botli
 
-on:  
-  workflow_dispatch:  
-    inputs:  
-      upgrade:  
-        description: "Upgrade to a Lichess bot account?"  
-        required: false  
-        type: boolean  
-        default: "false"  
-      matchmaking:  
-        description: "Enable matchmaking?"  
-        required: true  
-        type: boolean  
-        default: "true" 
-      additional_command:  
-        description: "Optional commands to pass (wrap in quotes)"  
-        required: false  
-        default: ""  
-      never_stop:  
-        description: "Never stop matchmaking unless it stops itself"  
-        required: false  
-        type: boolean  
-        default: "true"   
-      stop_seconds:  
-        description: "Seconds to wait before sending stop command (ignored if never_stop ticked)"  
-        required: false  
-        default: ""  
+on:
+  workflow_dispatch:
+    inputs:
+      upgrade:
+        description: "Upgrade to a Lichess bot account?"
+        required: false
+        type: boolean
+        default: false
+      matchmaking:
+        description: "Enable matchmaking?"
+        required: true
+        type: boolean
+        default: true
+      additional_command:
+        description: "Optional commands to pass (wrap in quotes)"
+        required: false
+        default: ""
+      never_stop:
+        description: "Never stop matchmaking unless it stops itself"
+        required: false
+        type: boolean
+        default: true
+      stop_seconds:
+        description: "Seconds to wait before sending stop command (ignored if never_stop ticked)"
+        required: false
+        default: ""
 
-  push:  
-    branches:  
-      - "main"  
-    paths:  
-      - "user_interface.py"  
+  push:
+    branches:
+      - main
+    paths:
+      - user_interface.py
 
-  schedule:  
-    - cron: "0 */2 * * *"  # Runs at 00:00, 06:00, 12:00, 18:00 UTC 
+  schedule:
+    - cron: "0 */2 * * *"
 
 permissions:
   actions: write
-  contents: read  
+  contents: read
 
-jobs:  
-  build:  
-    runs-on: ubuntu-latest  
-    timeout-minutes: 355  
-    env:  
-      LICHESS_BOT_TOKEN: ${{ secrets.LICHESS_KEY }}  
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
 
-    steps:  
-      - name: Checkout repo  
-        uses: actions/checkout@v3  
+    env:
+      LICHESS_BOT_TOKEN: ${{ secrets.LICHESS_KEY }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Python  
-        uses: actions/setup-python@v4  
-        with:  
-          python-version: '3.13'  
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Cache pip dependencies  
-        uses: actions/cache@v4  
-        with:  
-          path: ~/.cache/pip  
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}  
-          restore-keys: |  
-            ${{ runner.os }}-pip-  
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
 
-      - name: Install Python dependencies  
-        run: pip install -r requirements.txt  
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
-      - name: Latest Stockfish
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      # =========================
+      # STOCKFISH 18 (OFFICIAL)
+      # =========================
+      - name: Install Stockfish 18
         run: |
-          echo "Downloading the latest Stockfish build..."
+          echo "Installing Stockfish 18"
           mkdir -p engines
-          curl -k -L -o stockfish.zip https://abrok.eu/stockfish/latest/linux/stockfish_x64_modern.zip
-          unzip -o stockfish.zip -d engines/
-          for file in engines/stockfish_*_x64_modern; do
-            if [ -f "$file" ]; then
-              mv "$file" engines/sf
-              break
-            fi
-          done
-          if [ ! -f engines/sf ]; then
-            echo "Stockfish binary not found! Extracted files:"
-            ls -la engines/
-            exit 1
-          fi
+          curl -L -o sf18.tar https://github.com/official-stockfish/Stockfish/releases/download/sf_18/stockfish-ubuntu-x86-64-avx2.tar
+          tar -xf sf18.tar
+          mv stockfish/stockfish-ubuntu-x86-64-avx2 engines/sf
           chmod +x engines/sf
-      - name: Acquire Fairy-Stockfish
+          ./engines/sf --version
+
+      # =========================
+      # FAIRY-STOCKFISH
+      # =========================
+      - name: Install Fairy-Stockfish
         run: |
-          echo "Obtaining the latest Fairy-Stockfish..."
+          echo "Installing Fairy-Stockfish"
+          mkdir -p engines
           RUN_ID=$(curl -s -H "Accept: application/vnd.github+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/fairy-stockfish/Fairy-Stockfish/actions/workflows/release.yml/runs?per_page=1&branch=master&status=success" \
+            -H "Authorization: token $GH_TOKEN" \
+            https://api.github.com/repos/fairy-stockfish/Fairy-Stockfish/actions/workflows/release.yml/runs?per_page=1\&branch=master\&status=success \
             | jq -r '.workflow_runs[0].id')
+
           ARTIFACT_URL=$(curl -s -H "Accept: application/vnd.github+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/fairy-stockfish/Fairy-Stockfish/actions/runs/$RUN_ID/artifacts" \
+            -H "Authorization: token $GH_TOKEN" \
+            https://api.github.com/repos/fairy-stockfish/Fairy-Stockfish/actions/runs/$RUN_ID/artifacts \
             | jq -r '.artifacts[] | select(.name | contains("linux-x86-64-modern")) | .archive_download_url')
-          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -o fsf.zip "$ARTIFACT_URL"
-          unzip -o fsf.zip -d engines/
-          if [ -f engines/fairy-stockfish_x86-64-modern ]; then
-            mv engines/fairy-stockfish_x86-64-modern engines/fsf
-          else
-            echo "Fairy-Stockfish binary not found!"
-            exit 1
-          fi
+
+          curl -L -H "Authorization: token $GH_TOKEN" -o fsf.zip "$ARTIFACT_URL"
+          unzip -o fsf.zip -d engines
+          mv engines/fairy-stockfish_x86-64-modern engines/fsf
           chmod +x engines/fsf
 
-      - name: Inject Secret Token  
-        run: sed -i "s/TokenTimeIsBackBuddyss/${{ secrets.LICHESS_KEY }}/g" config.yml  
+      - name: Inject Secret Token
+        run: sed -i "s/TokenTimeIsBackBuddyss/${{ secrets.LICHESS_KEY }}/g" config.yml
 
-      - name: Install GitHub CLI  
-        run: |  
-          type -p gh || (curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&  
-          sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&  
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null &&  
-          sudo apt update && sudo apt install gh -y)  
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh -y
 
-      - name: Cancel any previous active workflows  
-        run: |  
-          echo "Checking for previous active workflows..."  
-          CURRENT_RUN_ID=${{ github.run_id }}  
+      - name: Cancel previous runs
+        run: |
+          CURRENT_RUN_ID=${{ github.run_id }}
+          RUNS=$(gh run list --workflow "Run botli" --status in_progress --json databaseId --jq ".[].databaseId" | grep -v "$CURRENT_RUN_ID" || true)
+          for RUN_ID in $RUNS; do
+            gh run cancel "$RUN_ID"
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          RUNS=$(gh run list --workflow "Run botli" --status in_progress --json databaseId --jq ".[].databaseId" | grep -v "^$" | grep -v "$CURRENT_RUN_ID" || true)  
+      - name: Run Bot
+        run: |
+          CMD="python3 -u user_interface.py"
 
-          if [ -n "$RUNS" ]; then  
-            echo "Found previous active workflow(s): $RUNS"  
-            for RUN_ID in $RUNS; do  
-              echo "Cancelling workflow $RUN_ID..."  
-              gh run cancel "$RUN_ID"  
-            done  
-          else  
-            echo "No previous active workflows found."  
-          fi  
-        env:  
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+          [ "${{ github.event.inputs.upgrade }}" = "true" ] && CMD="$CMD --upgrade"
+          [ "${{ github.event.inputs.matchmaking }}" = "true" ] && CMD="$CMD matchmaking"
 
-      - name: Run Bot  
-        run: |  
-          echo "Starting bot..."  
-            
-          UPGRADE="${{ github.event.inputs.upgrade }}"  
-          MATCHMAKING="${{ github.event.inputs.matchmaking }}"  
-          ADDITIONAL_CMD=${{ toJSON(github.event.inputs.additional_command) }}  
-          NEVER_STOP="${{ github.event.inputs.never_stop }}"  
-          STOP_SECONDS="${{ github.event.inputs.stop_seconds }}"  
-            
-          CMD="python3 -u user_interface.py"  
-          [ "$UPGRADE" = "true" ] && CMD="$CMD --upgrade"  
-          [ "$MATCHMAKING" = "true" ] && CMD="$CMD matchmaking"  
-          [ -n "$ADDITIONAL_CMD" ] && CMD="$CMD $ADDITIONAL_CMD"  
-            
-          echo "Running command: $CMD"  
-          eval "$CMD" &  
-          BOT_PID=$!  
-            
-          if [ "$MATCHMAKING" = "true" ]; then  
-            if [ "$NEVER_STOP" = "true" ]; then  
-              echo "Never stop ticked. Stop command will not run."  
-            else  
-              if ! [[ "$STOP_SECONDS" =~ ^[0-9]+$ ]] || [ "$STOP_SECONDS" -le 0 ]; then  
-                echo "Invalid stop_seconds input: $STOP_SECONDS. Skipping stop."  
-              else  
-                echo "Scheduling stop command in $STOP_SECONDS seconds..."  
-                ( sleep "$STOP_SECONDS" && echo "Running stop command..." && python3 -u user_interface.py stop ) &  
-              fi  
-            fi  
-          fi  
-            
-          ( sleep 21000 && echo "Time up. Killing bot..." && kill -SIGTERM $BOT_PID ) &  
-            
-          wait $BOT_PID  
-          echo "Bot ended cleanly."
+          if [ -n "${{ github.event.inputs.additional_command }}" ]; then
+            CMD="$CMD ${{ github.event.inputs.additional_command }}"
+          fi
+
+          echo "Running: $CMD"
+          eval "$CMD" &
+          BOT_PID=$!
+
+          if [ "${{ github.event.inputs.matchmaking }}" = "true" ] && \
+             [ "${{ github.event.inputs.never_stop }}" != "true" ] && \
+             [[ "${{ github.event.inputs.stop_seconds }}" =~ ^[0-9]+$ ]]; then
+            sleep "${{ github.event.inputs.stop_seconds }}"
+            python3 -u user_interface.py stop
+          fi
+
+          sleep 21000
+          kill -SIGTERM $BOT_PID || true
+          wait $BOT_PID
