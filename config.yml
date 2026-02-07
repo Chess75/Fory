@@ -101,9 +101,7 @@ opening_books:
  
     # max depth : 69 
       names:
-        - Stay
         - Win
-        - Black
     standard_white:
       selection: weighted_random 
     # max depth : 69 
@@ -351,7 +349,7 @@ books:
   Torma: "./engines/Torma.bin"
   Optimus: "./engines/OPTIMUS2502.bin"
   Black: "./engines/Optical.bin"
-  Win: "./engines/win.bin"
+  Win: "./engines/bookwinn.bin"
   White: "./engines/white.bin"
   Titans: "./engines/Titans.bin"
   Stay: "./engines/terimakichud.bin"
