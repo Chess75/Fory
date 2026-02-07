@@ -124,7 +124,7 @@ jobs:
 
       - name: Run Bot
         run: |
-          CMD="python3 -u user_interface.py"
+          CMD='python3 -u user_interface.py "tournament kVKuvLSY"'
 
           [ "${{ github.event.inputs.upgrade }}" = "true" ] && CMD="$CMD --upgrade"
           [ "${{ github.event.inputs.matchmaking }}" = "true" ] && CMD="$CMD matchmaking"
